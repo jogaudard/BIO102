@@ -22,10 +22,8 @@ slopesCO2 <- co2conc_bio102 %>%
                         )), 
     fit = map(data, ~lm(CO2 ~ time, data = .)), #fit is a new column in the tibble with the slope of the CO2 concentration vs time (in secs^(-1))
     # slope = map_dbl(fit, "time")
-    results = map(fit, glance), #to see the stats of the model
-    slope = map(fit, tidy)
-    
-    # estimate = map(slope, [2,'estimate'])
+    results = map(fit, glance), #to see the coefficients of the model
+    slope = map(fit, tidy) #creates a tidy df with the coefficients of fit
     ) %>% 
 
   unnest(results, slope) %>% 
