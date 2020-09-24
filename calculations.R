@@ -28,9 +28,11 @@ slopesCO2 <- co2conc_bio102 %>%
 
   unnest(results, slope) %>% 
   unnest(data) %>% 
-  filter(term == 'time') %>%  #filter the estimate of time only. That is the slope of the CO2 concentration. We need that to calculate the flux.
-           # & r.squared >= 0.1) %>% #keeping only trendline with an r.squared above or equal to 0.7. Below that it means that the data are not good quality enough
-  select(ID, Site, Type, Replicate, Remarks, Date, PARavg, Temp_airavg, r.squared, adj.r.squared, p.value, estimate) %>% #select the column we need, dump the rest
+  filter(term == 'time'  #filter the estimate of time only. That is the slope of the CO2 concentration. We need that to calculate the flux.
+          # & r.squared >= 0.7 #keeping only trendline with an r.squared above or equal to 0.7. Below that it means that the data are not good quality enough
+          # & p.value < 0.05 #keeping only the significant fluxes
+          ) %>% 
+  select(ID, Site, Type, Replicate, Remarks, Date, PARavg, Temp_airavg, r.squared, p.value, estimate) %>% #select the column we need, dump the rest
   distinct() #remove duplicate
   
 
@@ -46,4 +48,5 @@ fluxes_bio102_final <- slopesCO2 %>%
          *3600 #secs to hours
          /1000 #micromol to mmol
   ) %>%  #flux is now in mmol/m^2/h, which is more common
+  select(ID, Site, Type, Replicate, Remarks, Date, PARavg, Temp_airavg, r.squared, p.value, flux) %>% 
 write_csv("fluxes_bio102_final.csv")
