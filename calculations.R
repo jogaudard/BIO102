@@ -34,7 +34,7 @@ slopesCO2 <- co2conc_bio102 %>%
   distinct() #remove duplicate
   
 
-vol = 25 #volume of the chamber + tubings in L
+vol = (24.5 + 0.075) #volume of the chamber (40x24.5x25cm) + tubings in (2x300x0.2x0.2 pi cm) L
 P = 1 #atmospherique pressure, assumed at 1 atm
 R = 0.082057 #gas constant, in L*atm*K^(-1)*mol^(-1)
 A = 0.0625 #area of plot in m^2
