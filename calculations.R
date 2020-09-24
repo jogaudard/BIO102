@@ -41,9 +41,9 @@ A = 0.0625 #area of plot in m^2
 
 #calculate fluxes using the trendline and the air temperature
 
-fluxes_bio102 <- slopesCO2 %>% 
+fluxes_bio102_final <- slopesCO2 %>% 
   mutate(flux = (estimate * P * vol)/(R * Temp_airavg * A) #gives flux in micromol/s/m^2
          *3600 #secs to hours
          /1000 #micromol to mmol
   ) %>%  #flux is now in mmol/m^2/h, which is more common
-write_csv("fluxes_bio102.csv")
+write_csv("fluxes_bio102_final.csv")

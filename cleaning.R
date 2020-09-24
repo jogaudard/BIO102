@@ -7,7 +7,7 @@ endcrop <- 0 #how much to crop at the end of the measurement in seconds
 
 #import flux data from the logger
 fluxes <- 
-  read_csv("BIO102_fluxes.csv", na = c("#N/A"), col_types = "ctcnnnnn") %>%
+  read_csv("BIO102_fluxes_raw.csv", na = c("#N/A"), col_types = "ctcnnnnn") %>%
   rename(CO2 = "CO2 (ppm)", PAR = "PAR (umolsm2)", Temp_air = "Temp_air ('C)") %>%  #rename the columns to get something more practical without spaces
   mutate(Date = strptime(as.character(.$Date), "%d.%m.%Y"), #convert date in strptime
           Datetime = as.POSIXct(paste(Date, Time))) %>%  #paste date and time in one column
