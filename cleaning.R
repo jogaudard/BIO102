@@ -1,5 +1,5 @@
 library(tidyverse)
-source("https://github.com/jogaudard/common/blob/master/fun-fluxes.R")
+source("https://raw.githubusercontent.com/jogaudard/common/master/fun-fluxes.R")
 library(lubridate, warn.conflicts = FALSE)
 library("dataDownloader")
 
@@ -9,9 +9,13 @@ endcrop <- 0 #how much to crop at the end of the measurement in seconds
 
 #import data from OSF
 
-# fluxes_test <- get_file(node = "3qhdj",
-#                    file = "BIO102_fluxes_raw.csv",
-#                    remote_path = "raw_data")
+get_file(node = "3qhdj",
+         file = "BIO102_fluxes_raw.csv",
+         remote_path = "raw_data")
+
+get_file(node = "3qhdj",
+         file = "Field_data_BIO102.csv",
+         remote_path = "raw_data")
 
 #import flux data from the logger
 fluxes <- 
