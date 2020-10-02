@@ -26,14 +26,14 @@ fluxes <-
   select(Datetime,CO2,PAR,Temp_air)
 
 #import field data from the data sheet
-field_data <- read_csv("Field_data_BIO102.csv", na = c(""), col_types = "cnctDcn") %>% 
+field_data <- read_csv("Field_data_BIO102.csv", na = c(""), col_types = "cnctDcnn") %>% 
   mutate(
     Start = as_datetime(paste(Date, Starting_time)), #converting the date as posixct, pasting date and starting time together
     # Datetime = Start, #useful for left_join
     End = Start + measurement - endcrop, #creating column End and cropping the end of the measurement
     Start = Start + startcrop #cropping the start
     ) %>%  
-  select(Site,Type,Replicate,Starting_time,Date,Remarks,Start,End)
+  select(Plot_ID,Type,Replicate,Starting_time,Date,Remarks,Start,End,Campaign)
 
 co2conc_bio102 <- match.flux(fluxes, field_data)
 
