@@ -30,13 +30,15 @@ fluxes <- read_csv("fluxes_bio102.csv") %>% #give an obvious name to your object
 summary(fluxes)
 
 # plotting everything together
-ggplot(fluxes, aes(x= Site, y = flux)) +
-  geom_boxplot(fill = "grey80", colour = "black") +
-  geom_jitter(shape = 15, colour = "blue") +
-  scale_x_discrete() + xlab("Site") + ylab("Flux (mmol/m2/h") + 
-  facet_wrap(~Type) + # makes wraps per type
-  theme_minimal() # detail: figure is not super pretty, maybe something can be done here
+Flux_figure1 <- ggplot(fluxes, aes(x= Site, y = flux)) +
+                  geom_boxplot(aes(fill = Site)) +
+                  scale_fill_brewer(palette = "Set1") +
+                  geom_jitter(shape = 16, colour = "black") +
+                  scale_x_discrete() + xlab("Site") + ylab("Flux (mmol/m2/h") + 
+                  facet_wrap(~Type) + # makes wraps per type
+                  theme_minimal() 
 
+Flux_figure1
 
 #anova on the different type of flux
 anova.fluxes <- fluxes %>%
