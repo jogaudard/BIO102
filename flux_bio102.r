@@ -2,6 +2,7 @@
 #install.packages("tidyverse")
 library(tidyverse)
 library(dbplyr)
+library(RColorBrewer)
 
 #Installing and getting devtools and datadownloader
 #install.packages("devtools") #Install this if you don't have it on your computer already
@@ -30,15 +31,14 @@ fluxes <- read_csv("fluxes_bio102.csv") %>% #give an obvious name to your object
 summary(fluxes)
 
 # plotting everything together
-Flux_figure1 <- ggplot(fluxes, aes(x= Site, y = flux)) +
-                  geom_boxplot(aes(fill = Site)) +
-                  scale_fill_brewer(palette = "Set1") +
-                  geom_jitter(shape = 16, colour = "black") +
-                  scale_x_discrete() + xlab("Site") + ylab("Flux (mmol/m2/h") + 
-                  facet_wrap(~Type) + # makes wraps per type
-                  theme_minimal() 
+ggplot(fluxes, aes(x= Site, y = flux)) +
+  geom_boxplot(aes(fill = Site)) +
+  scale_fill_brewer(palette = "Set1") +
+  geom_jitter(shape = 16, colour = "black") +
+  scale_x_discrete() + xlab("Site") + ylab("Flux (mmol/m2/h") + 
+  facet_wrap(~Type) + # makes wraps per type
+  theme_minimal() 
 
-Flux_figure1
 
 #anova on the different type of flux
 anova.fluxes <- fluxes %>%
@@ -64,3 +64,24 @@ fluxes.avg <- fluxes %>%
   ) %>% 
   pivot_longer(!Site, names_to = "Type", values_to = "flux.avg") # making a tidy tibble again
 
+
+
+
+# Barplot of all the fluxes, ideally showing error bars . 
+#Include the asphalt site. 
+#Can inlude NDVI in the same graph as points with a different vertical axis (0 to 1)
+
+all_fluxes <- read_csv("fluxes_bio102.csv") %>%
+  filter ( #you can directly filter the data here
+    ID != 11
+    & ID != 7
+    & ID != 19 #removed because we suspect: (11) someone breath in the chamber. (7) loose tube. (19) No fan no pump 
+    ) %>% 
+  mutate(Site = Plot_ID)
+
+#Plotting everything together
+ggplot(all_fluxes, aes(x=Site, y = flux)) +
+  geom_bar(stat = "identity", position = position_dodge()) + 
+  scale_fill_brewer(palette = "Set1") + #Can't find out why it won't colour the bars... 
+  facet_wrap(~Type) + #makes wraps per type 
+  theme_minimal()
