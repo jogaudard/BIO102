@@ -91,7 +91,7 @@ allfluxes.avg <- fluxes %>%
   ) %>% 
   pivot_wider(names_from = Type, values_from = allflux.avg) %>%  # pivoting the tibble to have NEE and ER as columns
   mutate(
-    GEP = ER - NEE #creating GEP column
+    GEP = NEE - ER #creating GEP column
   ) %>% 
   pivot_longer(!Site, names_to = "Type", values_to = "allflux.avg") # making a tidy tibble again
 
@@ -102,4 +102,5 @@ ggplot(allfluxes.avg, aes(x=Site, y = allflux.avg)) +
   facet_wrap(~Type) + #makes wraps per type 
   theme_minimal()
 
+#make a barplot beside of the NDVI 
 
