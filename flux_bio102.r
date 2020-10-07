@@ -91,7 +91,7 @@ allfluxes.avg <- fluxes %>%
   ) %>% 
   pivot_wider(names_from = Type, values_from = allflux.avg) %>%  # pivoting the tibble to have NEE and ER as columns
   mutate(
-    GEP = NEE - ER #creating GEP column
+    GEP = ER - NEE #creating GEP column
   ) %>% 
   pivot_longer(!Site, names_to = "Type", values_to = "allflux.avg") # making a tidy tibble again
 
