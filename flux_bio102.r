@@ -82,12 +82,24 @@ all_fluxes <- read_csv("fluxes_bio102.csv") %>%
     ) %>% 
   mutate(Site = Plot_ID)
 
+  
+#average per site of NEE and ER : grouping the data (tidyverse) and calculating GEP
+allfluxes.avg <- fluxes %>%
+  group_by(Site, Type) %>% # data are grouped by Site and Type
+  summarise( # I just discovered summarise, this is awesome!! It does just what we need
+    allflux.avg = mean(flux) #creating a new column called flux.avg with the mean of the flux
+  ) %>% 
+  pivot_wider(names_from = Type, values_from = allflux.avg) %>%  # pivoting the tibble to have NEE and ER as columns
+  mutate(
+    GEP = ER - NEE #creating GEP column
+  ) %>% 
+  pivot_longer(!Site, names_to = "Type", values_to = "allflux.avg") # making a tidy tibble again
+
 #Plotting everything together
-ggplot(all_fluxes, aes(x=Site, y = flux)) +
+ggplot(allfluxes.avg, aes(x=Site, y = allflux.avg)) +
   geom_bar(stat = "identity", position = position_dodge()) + 
   scale_fill_brewer(palette = "Set1") + #Can't find out why it won't colour the bars... 
   facet_wrap(~Type) + #makes wraps per type 
   theme_minimal()
 
-#calculate the median for each site 
-# Add the GEP in the bar plot (and not error bar)
+
