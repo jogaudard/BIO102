@@ -84,7 +84,7 @@ all_fluxes <- read_csv("fluxes_bio102.csv") %>%
 
   
 #average per site of NEE and ER : grouping the data (tidyverse) and calculating GEP
-allfluxes.avg <- fluxes %>%
+allfluxes.avg <- all_fluxes %>%
   group_by(Site, Type) %>% # data are grouped by Site and Type
   summarise( # I just discovered summarise, this is awesome!! It does just what we need
     allflux.avg = mean(flux) #creating a new column called flux.avg with the mean of the flux
@@ -95,6 +95,14 @@ allfluxes.avg <- fluxes %>%
   ) %>% 
   pivot_longer(!Site, names_to = "Type", values_to = "allflux.avg") # making a tidy tibble again
 
+#reading NDVI file and calculating the average from it 
+NDVI <- read_csv("NDVI_raw.csv") %>% 
+  group_by(Site) %>% 
+  summarise(
+    NDVI.avg = mean(NDVI)
+            ) 
+
+
 #Plotting everything together
 ggplot(allfluxes.avg, aes(x=Site, y = allflux.avg)) +
   geom_bar(stat = "identity", position = position_dodge()) + 
@@ -102,5 +110,10 @@ ggplot(allfluxes.avg, aes(x=Site, y = allflux.avg)) +
   facet_wrap(~Type) + #makes wraps per type 
   theme_minimal()
 
+ggplot(NDVI, aes(x = Site, y = NDVI.avg)) +
+  geom_bar(stat = "identity", position = position_dodge()) + 
+  scale_fill_brewer(palette = "Set1") + #adding colour to the barplot
+  theme_minimal()
 #make a barplot beside of the NDVI 
+
 
