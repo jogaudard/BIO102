@@ -15,6 +15,9 @@ get_file(node = "3qhdj",
          file = "fluxes_bio102.csv", #this is the file on OSF
          remote_path = "")
 
+get_file(node = "3qhdj",
+         file = "NDVI_raw.csv", #this is the file on OSF
+         remote_path = "raw_data")
 
 #opening data files 
 # library(readr) #readr is part of tidyverse, no need to call it again
@@ -85,3 +88,6 @@ ggplot(all_fluxes, aes(x=Site, y = flux)) +
   scale_fill_brewer(palette = "Set1") + #Can't find out why it won't colour the bars... 
   facet_wrap(~Type) + #makes wraps per type 
   theme_minimal()
+
+#calculate the median for each site 
+# Add the GEP in the bar plot (and not error bar)
