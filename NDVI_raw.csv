@@ -1,0 +1,11 @@
+Site,Replicate,NDVI
+moss,1,0.69
+moss,2,0.69
+asphalt,1,0.04
+asphalt,2,0.03
+bare_soil,1,0.2
+bare_soil,2,0.2
+grass,1,0.86
+grass,2,0.86
+leaves,1,0.28
+leaves,2,0.24
