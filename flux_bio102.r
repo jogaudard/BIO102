@@ -121,4 +121,6 @@ ggplot(NDVI, aes(x = Site, y = NDVI.avg)) +
   theme_minimal()
 #make a barplot beside of the NDVI 
 
-
+#Making a new table showing fluxes and r-squares
+fluxes_rsquare <- select(all_fluxes, Site, Type, r.squared, flux)
+  
