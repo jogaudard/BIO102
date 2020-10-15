@@ -3,6 +3,7 @@
 library(tidyverse)
 library(dbplyr)
 library(RColorBrewer)
+library(multcomp)
 
 #Installing and getting devtools and datadownloader
 #install.packages("devtools") #Install this if you don't have it on your computer already
@@ -53,6 +54,23 @@ anova.fluxes <- fluxes %>%
     )
 anova.fluxes[[3]] # will print the results of the anova
 
+fluxes <- mutate_at(fluxes, c("Site"), as_factor) #changing Site as a factor (necessary for linear model)
+
+tukey_fun <- function(df){
+  fit.lm <- lm(flux~Site, data=df)
+  mc <- glht(fit.lm, linfct=mcp(Site="Tukey"), data=df)
+  return(summary(mc))
+} #creating a function doing a tukey test
+  
+  
+tukey.fluxes <- fluxes %>%
+  group_by(Type) %>% 
+  nest() %>% 
+  mutate(
+    tukey.results = 
+      map(data,tukey_fun)
+  ) #running the tukey_fun function on the nested fluxes
+tukey.fluxes[[3]] #shows the summary of the tukey test. First tibble is NEE and second is ER.
 
 
 #average per site of NEE and ER : grouping the data (tidyverse) and calculating GEP
