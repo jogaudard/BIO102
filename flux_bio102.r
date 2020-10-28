@@ -101,9 +101,10 @@ fluxes.avg.plot <- ggplot(fluxes.avg, aes(x = Type, y = flux.avg, fill = Site, o
 
 all_fluxes <- read_csv("fluxes_bio102.csv") %>%
   filter ( #you can directly filter the data here
-    ID != 11
-    & ID != 7
-    & ID != 19 #removed because we suspect: (11) someone breath in the chamber. (7) loose tube. (19) No fan no pump 
+    ID != 11 #removed because we suspect someone breath in the chamber
+    & ID != 7 #removed because there was a loose tube
+    & ID != 19 #removed because no fan no pump 
+    & ID != 24 # removed because r square is significantly lower then the other two leaves_ER measurements 
     ) %>% 
   mutate(Site = Plot_ID)
 
@@ -116,7 +117,7 @@ allfluxes.avg <- all_fluxes %>%
   ) %>% 
   pivot_wider(names_from = Type, values_from = allflux.avg) %>%  # pivoting the tibble to have NEE and ER as columns
   mutate(
-    GEP = ER - NEE #creating GEP column
+    GEP = NEE - ER #creating GEP column
   ) %>% 
   pivot_longer(!Site, names_to = "Type", values_to = "allflux.avg") # making a tidy tibble again
 
@@ -129,7 +130,7 @@ NDVI <- read_csv("NDVI_raw.csv") %>%
 
 
 #Plotting everything together
-ggplot(allfluxes.avg, aes(x=Site, y = allflux.avg)) +
+ggplot(allfluxes.avg, aes(x=Site, y = allflux.avg, fill = Site)) +
   geom_bar(stat = "identity", position = position_dodge()) + 
   scale_fill_brewer(palette = "Set1") + #Can't find out why it won't colour the bars... 
   facet_wrap(~Type) + #makes wraps per type 
@@ -140,7 +141,6 @@ ggplot(NDVI, aes(x = Site, y = NDVI.avg)) +
   scale_fill_brewer(palette = "Set1") + #adding colour to the barplot
   theme_minimal()
 #make a barplot beside of the NDVI 
-
 
 #Working with the asphalt
 fluxes.asphalt <- read_csv("fluxes_bio102.csv") %>% #give an obvious name to your objects, so that you know what it is
@@ -186,4 +186,8 @@ fluxes.with.asphalt.plot + my_scale +
 fluxes.avg.plot + my_scale +
   ggsave("fluxes_all_sites.jpg")
   
+
+
+#Making a new table showing fluxes and r-squares
+fluxes_rsquare <- select(all_fluxes, Site, Type, r.squared, p.value, flux)
 
