@@ -86,9 +86,11 @@ fluxes.avg <- fluxes %>%
   pivot_longer(!Site, names_to = "Type", values_to = "flux.avg") # making a tidy tibble again
 
 #barplot of fluxes
-fluxes.avg.plot <- ggplot(fluxes.avg, aes(x = Type, y = flux.avg, fill = Site)) +
+# fluxes.avg <- mutate_at(fluxes.avg, c("Site"), as.character)
+fluxes.avg.plot <- ggplot(fluxes.avg, aes(x = Type, y = flux.avg, fill = Site, order = Site)) +
   geom_bar(stat="identity", position=position_dodge()) +
-  ggsave("fluxes_all_sites.jpg") #to save the graph as an image. Check ?ggsave for options
+  ylab("CO2 flux")
+  # ggsave("fluxes_all_sites.jpg") #to save the graph as an image. Check ?ggsave for options
 
 
 
@@ -139,4 +141,49 @@ ggplot(NDVI, aes(x = Site, y = NDVI.avg)) +
   theme_minimal()
 #make a barplot beside of the NDVI 
 
+
+#Working with the asphalt
+fluxes.asphalt <- read_csv("fluxes_bio102.csv") %>% #give an obvious name to your objects, so that you know what it is
+  filter ( #you can directly filter the data here
+    Plot_ID == "asphalt"
+    # r.squared >= 0.7 #removing r.square belov 0.7, because data is not good enough for analyses
+    & ID != 11 #removed because we suspect someone breath in the chamber
+    & p.value <= 0.05 #we filter the p.value at that step. The non significant data should not be removed during the cleaning (my mistake, sorry)
+  ) %>% 
+  rename(
+    Site = Plot_ID # the functions from fun-flux use Plot_ID to designate the plots. Now we can rename them Site again for more clarity
+  )
+
+asphalt.avg <- fluxes.asphalt %>%
+  group_by(Site, Type) %>% # data are grouped by Type
+  summarise( 
+    flux.avg = mean(flux) #creating a new column called flux.avg with the mean of the flux
+  ) %>% 
+  pivot_wider(names_from = Type, values_from = flux.avg) %>%  # pivoting the tibble to have NEE and ER as columns
+  mutate(
+    GEP = ER - NEE #creating GEP column
+  ) %>% 
+  pivot_longer(!Site, names_to = "Type", values_to = "flux.avg") # making a tidy tibble again
+
+fluxes.with.asphalt <- bind_rows(asphalt.avg, fluxes.avg)
+
+
+fluxes.with.asphalt <- mutate_at(fluxes.with.asphalt, c("Site"), as_factor)
+fluxes.with.asphalt.plot <- ggplot(fluxes.with.asphalt, aes(x = Type, y = flux.avg, fill = Site)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  ylab("CO2 flux")
+  # ggsave("fluxes_all_sites_asphalt.jpg")
+
+#some manipulation to keep the same colours for each site
+# my_colors <- c("red", "blue", "green", "yellow", "purple")
+my_colors <- brewer.pal(5,"Set2")
+names(my_colors) <- levels(fluxes.with.asphalt$Site)
+my_scale <- scale_fill_manual(name = "Site", values = my_colors)
+
+fluxes.with.asphalt.plot + my_scale +
+  ggsave("fluxes_all_sites_asphalt.jpg")
+  
+fluxes.avg.plot + my_scale +
+  ggsave("fluxes_all_sites.jpg")
+  
 
