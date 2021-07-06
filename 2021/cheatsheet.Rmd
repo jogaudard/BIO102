@@ -72,8 +72,10 @@ But in plant physiology it makes more sense to use $mol/m^2/s$ as it reflects be
 
 ## Calculations
 
-<img src="https://render.githubusercontent.com/render/math?math=flux=slope\times \frac{P\times V}{R\times T\times A}">
+<img src="https://render.githubusercontent.com/render/math?math=\color{violet}flux=slope\times \frac{P\times V}{R\times T\times A}">
+
 Where:
+
 - flux: the flux of CO~2~ at the surface of the plot (mmol/m^2^/h)
 - slope: slope of linear regression fitting the CO~2~ concentration versus time (ppm^-1^)
 - P: pressure, assumed 1 atm
