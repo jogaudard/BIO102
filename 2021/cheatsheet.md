@@ -3,6 +3,9 @@ Carbon flux cheat sheet
 Joseph Gaudard
 July 6, 2021
 
+<style>
+div.white { background-color:white; }
+</style>
 ## Fluxes
 
 By convention we look here at fluxes from the atmosphere perspective. Which means that a negative flux is a loss for the atmosphere and an uptake for the ecosystem. Positive fluxes are a gain for the atmosphere and an emission (loss) from the ecosystem. Note that the opposite would also be correct. That is why it is always necessary to indicate which convention you are using in your work.
@@ -25,8 +28,7 @@ GEP is the total production of the ecosystem. Meaning the photosynthesis done by
 
 Put simply, NDVI is a measurement of "how green" the ecosystem is. It quantifies the difference between near infrared (NIR; strongly reflected by vegetation) and red light (asborbed by vegetation). It has a value between -1 and 1. The closer to 1, the denser the vegetation is.
 
-$$NDVI= \\frac{NIR-Red}{NIR+Red}$$
-
+<!-- $$NDVI= \frac{NIR-Red}{NIR+Red}$$ -->
 <img src="https://render.githubusercontent.com/render/math?math=NDVI= \frac{NIR-Red}{NIR%2BRed}">
 
 <!-- \begin{equation} -->

@@ -9,6 +9,11 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<style>
+div.white { background-color:white; }
+</style>
+
+
 ## Fluxes
 By convention we look here at fluxes from the atmosphere perspective.
 Which means that a negative flux is a loss for the atmosphere and an uptake for the ecosystem.
@@ -44,9 +49,11 @@ It quantifies the difference between near infrared (NIR; strongly reflected by v
 It has a value between -1 and 1.
 The closer to 1, the denser the vegetation is.
 
-$$NDVI= \frac{NIR-Red}{NIR+Red}$$
+<!-- $$NDVI= \frac{NIR-Red}{NIR+Red}$$ -->
 
+<div class = "white">
 <img src="https://render.githubusercontent.com/render/math?math=NDVI= \frac{NIR-Red}{NIR%2BRed}">
+</div>
 
 <!-- \begin{equation} -->
 <!--   \text{NDVI} = \frac{\text{NIR}-\text{Red}}{\text{NIR}+\text{Red}} -->
