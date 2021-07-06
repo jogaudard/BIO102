@@ -9,22 +9,21 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Introduction
+### Carbon storage
+Siri?
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### Carbon fluxes (Joseph)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+- Ecosystem respiration (ER)
+- Gross ecosystem production (GEP)
+- Net ecosystem exchange (NEE)
+- Light response curve (we will not do any here but I think it is important to introduce what it is and why we use them)
 
-```{r cars}
-summary(cars)
-```
 
-## Including Plots
+## Field measurements
+Joseph will first demonstrate how the setup works and what is what.
+Then he will move from group to group to measure NEE and ER at each of the sites.
+The students will do the measurements themselves.
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
