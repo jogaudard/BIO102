@@ -5,13 +5,12 @@ date: "July 6, 2021"
 output: github_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<style>
-div.white { background-color:white; }
-</style>
+
 
 
 ## Fluxes
@@ -51,9 +50,9 @@ The closer to 1, the denser the vegetation is.
 
 <!-- $$NDVI= \frac{NIR-Red}{NIR+Red}$$ -->
 
-<div class = "white">
-<img src="https://render.githubusercontent.com/render/math?math=NDVI= \frac{NIR-Red}{NIR%2BRed}">
-</div>
+
+<img src="https://render.githubusercontent.com/render/math?math=\color{violet}NDVI= \frac{NIR-Red}{NIR%2BRed}">
+
 
 <!-- \begin{equation} -->
 <!--   \text{NDVI} = \frac{\text{NIR}-\text{Red}}{\text{NIR}+\text{Red}} -->
