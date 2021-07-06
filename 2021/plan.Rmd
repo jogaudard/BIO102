@@ -2,7 +2,7 @@
 title: 'BIO102: carbon fluxes and storage'
 author: "Joseph Gaudard"
 date: "July 6, 2021"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
