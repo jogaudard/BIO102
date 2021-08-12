@@ -9,11 +9,11 @@ library(fs)
 # to match the fluxes with the correct site
 match.flux <- function(raw_flux, field_record){
   co2conc <- full_join(raw_flux, field_record, by = c("datetime" = "start"), keep = TRUE) %>% #joining both dataset in one
-    fill(PAR, temp_air, temp_soil, turfID, type, campaign, start, date, end, start_window, end_window) %>% #filling all rows (except Remarks) with data from above
+    fill(PAR, temp_air, temp_soil, site, type, replicate, campaign, start, date, end, start_window, end_window) %>% #filling all rows (except Remarks) with data from above
     group_by(date, turfID, type) %>% #this part is to fill Remarks while keeping the NA (some fluxes have no remark)
     fill(comments) %>% 
     ungroup() %>% 
-    mutate(ID = group_indices(., date, turfID, type)) %>% #assigning a unique ID to each flux, useful for plotting uzw
+    mutate(ID = group_indices(., date, site, type, replicate)) %>% #assigning a unique ID to each flux, useful for plotting uzw
     filter(
       datetime <= end
       & datetime >= start) #%>% #cropping the part of the flux that is after the End and before the Start
@@ -55,13 +55,13 @@ flux.calc <- function(co2conc, # dataset of CO2 concentration versus time (outpu
            # & p.value < 0.05 #keeping only the significant fluxes
     ) %>% 
     # select(ID, Plot_ID, Type, Replicate, Remarks, Date, PARavg, Temp_airavg, r.squared, p.value, estimate, Campaign) %>% #select the column we need, dump the rest
-    distinct(ID, turf_ID, type, commments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, estimate, campaign, .keep_all = TRUE) %>%  #remove duplicate. Because of the nesting, we get one row per Datetime entry. We only need one row per flux. Select() gets rid of Datetime and then distinct() is cleaning those extra rows.
+    distinct(ID, site, type, replicate, commments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, estimate, campaign, .keep_all = TRUE) %>%  #remove duplicate. Because of the nesting, we get one row per Datetime entry. We only need one row per flux. Select() gets rid of Datetime and then distinct() is cleaning those extra rows.
     #calculate fluxes using the trendline and the air temperature
     mutate(flux = (estimate * atm_pressure * vol)/(R * temp_airavg * plot_area) #gives flux in micromol/s/m^2
            *3600 #secs to hours
            /1000 #micromol to mmol
     ) %>%  #flux is now in mmol/m^2/h, which is more common
-    select(datetime, ID, turf_ID, type, comments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, nobs, flux, campaign)
+    select(datetime, ID, site, replicate, type, comments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, nobs, flux, campaign)
   
   return(fluxes_final)
   
@@ -122,7 +122,7 @@ fluxes <-
 
 #import the record file from the field
 
-record <- read_csv("data/BIO102_field-record_2021.csv", na = c(""), col_types = "cctDfc") %>% 
+record <- read_csv("data/BIO102_field-record_2021.csv", na = c(""), col_types = "ffftDfc") %>% 
   drop_na(starting_time) %>% #delete row without starting time (meaning no measurement was done)
   mutate(
     start = ymd_hms(paste(date, starting_time)), #converting the date as posixct, pasting date and starting time together
