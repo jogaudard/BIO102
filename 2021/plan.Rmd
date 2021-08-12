@@ -19,7 +19,7 @@ Siri?
 - Ecosystem respiration (ER)
 - Gross ecosystem production (GEP)
 - Net ecosystem exchange (NEE)
-- Light response curve (we will not do any here but I think it is important to introduce what it is and why we use them)
+<!-- - Light response curve (we will not do any here but I think it is important to introduce what it is and why we use them) -->
 
 
 ## Field measurements
