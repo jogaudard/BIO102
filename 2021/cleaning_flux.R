@@ -1,9 +1,11 @@
 # This script is to clean the flux data from logger format to a dataset of fluxes with all the sites and environmental parameters
 
 # We need some packages to make it work
-library("dataDownloader")
+library(tidyverse)
+library("dataDownloader") #details here https://github.com/Between-the-Fjords/dataDownloader
 library(broom)
 library(fs)
+library(lubridate)
 
 # We also need to write our own functions:
 # to match the fluxes with the correct site
@@ -77,36 +79,36 @@ endcrop <- 40 #how much to crop at the end of the measurement in seconds
 # co2 concentration
 get_file(node = "3qhdj",
          file = "BIO102_cflux_2021.zip",
-         path = "data",
+         path = "2021/data",
          remote_path = "raw_data/2021")
 # field record
 get_file(node = "3qhdj",
          file = "BIO102_field-record_2021.csv",
-         path = "data",
+         path = "2021/data",
          remote_path = "raw_data/2021")
 # NDVI
 get_file(node = "3qhdj",
          file = "BIO102_NDVI_2021.csv",
-         path = "data",
+         path = "2021/data",
          remote_path = "raw_data/2021")
 # Soil moisture
 get_file(node = "3qhdj",
          file = "BIO102_soil-moisture_2021.csv",
-         path = "data",
+         path = "2021/data",
          remote_path = "raw_data/2021")
 
 # Unzip files
-zipFile <- "data/BIO102_cflux_2021.zip"
+zipFile <- "2021/data/BIO102_cflux_2021.zip"
 if(file.exists(zipFile)){
-  outDir <- "data"
+  outDir <- "2021/data"
   unzip(zipFile, exdir = outDir)
 }
 
 #importing fluxes data
-location <- "data" #location of datafiles
+location <- "2021/data/BIO102_cflux_2021" #location of datafiles
 
 fluxes <-
-  dir_ls(location, regexp = "*CO2*") %>% 
+  dir_ls(location, regexp = "CO2.") %>% 
   map_dfr(read_csv,  na = c("#N/A", "Over")) %>% 
   rename( #rename the column to get something more practical without space
     CO2 = "CO2 (ppm)",
