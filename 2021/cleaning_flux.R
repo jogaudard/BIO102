@@ -124,7 +124,7 @@ fluxes <-
 
 #import the record file from the field
 
-record <- read_csv("data/BIO102_field-record_2021.csv", na = c(""), col_types = "ffftDfc") %>% 
+record <- read_csv("2021/data/BIO102_field-record_2021.csv", na = c(""), col_types = "ffftDfc") %>% 
   drop_na(starting_time) %>% #delete row without starting time (meaning no measurement was done)
   mutate(
     start = ymd_hms(paste(date, starting_time)), #converting the date as posixct, pasting date and starting time together
@@ -137,7 +137,7 @@ record <- read_csv("data/BIO102_field-record_2021.csv", na = c(""), col_types = 
 co2_fluxes <- match.flux(fluxes,record)
 
 # import cutting
-cutting <- read_csv("data/c-flux/summer_2021/Three-D_cutting_2021.csv", na = "", col_types = "dtt")
+cutting <- read_csv("2021/data/c-flux/summer_2021/Three-D_cutting_2021.csv", na = "", col_types = "dtt")
 
 co2_cut <- co2_fluxes %>% 
   left_join(cutting, by = "ID") %>% 
