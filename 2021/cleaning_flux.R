@@ -11,11 +11,11 @@ library(lubridate)
 # to match the fluxes with the correct site
 match.flux <- function(raw_flux, field_record){
   co2conc <- full_join(raw_flux, field_record, by = c("datetime" = "start"), keep = TRUE) %>% #joining both dataset in one
-    fill(PAR, temp_air, temp_soil, site, type, replicate, campaign, start, date, end, start_window, end_window) %>% #filling all rows (except Remarks) with data from above
-    group_by(date, turfID, type) %>% #this part is to fill Remarks while keeping the NA (some fluxes have no remark)
+    fill(PAR, temp_air, temp_soil, site, type, plot, campaign, start, date, end, start_window, end_window) %>% #filling all rows (except Remarks) with data from above
+    group_by(date, site, plot, type) %>% #this part is to fill Remarks while keeping the NA (some fluxes have no remark)
     fill(comments) %>% 
     ungroup() %>% 
-    mutate(ID = group_indices(., date, site, type, replicate)) %>% #assigning a unique ID to each flux, useful for plotting uzw
+    mutate(ID = group_indices(., date, site, type, plot)) %>% #assigning a unique ID to each flux, useful for plotting uzw
     filter(
       datetime <= end
       & datetime >= start) #%>% #cropping the part of the flux that is after the End and before the Start
@@ -96,6 +96,11 @@ get_file(node = "3qhdj",
          file = "BIO102_soil-moisture_2021.csv",
          path = "2021/data",
          remote_path = "raw_data/2021")
+# cutting file
+get_file(node = "3qhdj",
+         file = "BIO102_cutting_2021.csv",
+         path = "2021/data",
+         remote_path = "raw_data/2021")
 
 # Unzip files
 zipFile <- "2021/data/BIO102_cflux_2021.zip"
@@ -137,7 +142,7 @@ record <- read_csv("2021/data/BIO102_field-record_2021.csv", na = c(""), col_typ
 co2_fluxes <- match.flux(fluxes,record)
 
 # import cutting
-cutting <- read_csv("2021/data/c-flux/summer_2021/Three-D_cutting_2021.csv", na = "", col_types = "dtt")
+cutting <- read_csv("2021/data/BIO102_cutting_2021.csv", na = "", col_types = "dtt")
 
 co2_cut <- co2_fluxes %>% 
   left_join(cutting, by = "ID") %>% 
@@ -172,8 +177,8 @@ ggplot(co2_cut, aes(x = datetime, y = CO2, color = cut)) +
   geom_line(size = 0.2, aes(group = ID)) +
   scale_x_datetime(date_breaks = "1 min", minor_breaks = "10 sec", date_labels = "%e/%m \n %H:%M") +
   # scale_x_date(date_labels = "%H:%M:%S") +
-  facet_wrap(vars(ID), ncol = 30, scales = "free") +
-  ggsave("threed_2021_detailb.png", height = 60, width = 90, units = "cm")
+  facet_wrap(vars(ID), ncol = 5, scales = "free") +
+  ggsave("2021/BIO102_2021_detailb.png", height = 20, width = 30, units = "cm")
 
 # cutting the part we want to keep. To do only after cleaning everything
 co2_cut <- filter(co2_cut, cut == "keep") #to keep only the part we want to keep
@@ -181,4 +186,6 @@ co2_cut <- filter(co2_cut, cut == "keep") #to keep only the part we want to keep
 # calculating the fluxes
 fluxes2021 <- flux.calc(co2_cut)
 
-write_csv(fluxes2021, "data/BIO102_c-flux_2021.csv")
+# needs to add avg NDVI and soil moisture
+
+write_csv(fluxes2021, "2021/data/BIO102_c-flux_2021.csv")
