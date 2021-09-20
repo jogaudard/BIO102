@@ -180,6 +180,45 @@ ggplot(co2_cut, aes(x = datetime, y = CO2, color = cut)) +
   facet_wrap(vars(ID), ncol = 5, scales = "free") +
   ggsave("2021/BIO102_2021_detailb.png", height = 20, width = 30, units = "cm")
 
+# graph PAR, soil temp and air temp to check
+ggplot(co2_cut, aes(x = datetime, y = PAR, color = cut)) +
+  geom_line(size = 0.2, aes(group = ID)) +
+  scale_x_datetime(date_breaks = "1 min", minor_breaks = "10 sec", date_labels = "%e/%m \n %H:%M") +
+  # scale_x_date(date_labels = "%H:%M:%S") +
+  facet_wrap(vars(ID), ncol = 5, scales = "free") +
+  ggsave("2021/BIO102_2021_detailb_PAR.png", height = 20, width = 30, units = "cm")
+
+ggplot(co2_cut, aes(x = datetime, y = temp_air, color = cut)) +
+  geom_line(size = 0.2, aes(group = ID)) +
+  scale_x_datetime(date_breaks = "1 min", minor_breaks = "10 sec", date_labels = "%e/%m \n %H:%M") +
+  # scale_x_date(date_labels = "%H:%M:%S") +
+  facet_wrap(vars(ID), ncol = 5, scales = "free") +
+  ggsave("2021/BIO102_2021_detailb_air.png", height = 20, width = 30, units = "cm")
+
+ggplot(co2_cut, aes(x = datetime, y = temp_soil, color = cut)) +
+  geom_line(size = 0.2, aes(group = ID)) +
+  scale_x_datetime(date_breaks = "1 min", minor_breaks = "10 sec", date_labels = "%e/%m \n %H:%M") +
+  # scale_x_date(date_labels = "%H:%M:%S") +
+  facet_wrap(vars(ID), ncol = 5, scales = "free") +
+  ggsave("2021/BIO102_2021_detailb_soil.png", height = 20, width = 30, units = "cm")
+
+#Some corrections are needed with the PAR (I knew the sensor has a faulty contact: we will remove the dip when it is suddenly going close to 0 while it was in the light.)
+# co2_cut <- co2_cut %>% 
+#   mutate(
+#     PAR = 
+#       case_when(
+#         # type == "ER" & PAR <= 0 ~ 0, #when light is very low it can give a negative value. Obvioulsy this is a 0
+#         # ID == 1 & datetime %in% c(ymd_hms("2021-08-23T15:01:10"):ymd_hms("2021-08-23T15:01:29")) ~ NA_real_,
+#         # ID == 3 & datetime %in% c(ymd_hms("2021-08-23T15:17:"):ymd_hms("2021-08-23T15:01:29")),
+#         # ID == 1 & PAR <= 500 ~ NA_real_,
+#         # ID == 3 & PAR <= 100 ~ NA_real_,
+#         # ID == 6 & PAR <= 100 ~ NA_real_,
+#         # type == "NEE" & PAR <= 50 ~ NA_real_,#cannot do that because some NEE (forest) have very low PAR and this is normal
+#         TRUE ~ as.numeric(PAR)
+#       )
+#   )
+# second thought: will not do corrections as it is too difficult to know if it was a sensor faulty contact or someone shading the chamber
+
 # cutting the part we want to keep. To do only after cleaning everything
 co2_cut <- filter(co2_cut, cut == "keep") #to keep only the part we want to keep
 
