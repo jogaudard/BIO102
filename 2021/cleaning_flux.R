@@ -57,13 +57,13 @@ flux.calc <- function(co2conc, # dataset of CO2 concentration versus time (outpu
            # & p.value < 0.05 #keeping only the significant fluxes
     ) %>% 
     # select(ID, Plot_ID, Type, Replicate, Remarks, Date, PARavg, Temp_airavg, r.squared, p.value, estimate, Campaign) %>% #select the column we need, dump the rest
-    distinct(ID, site, type, replicate, commments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, estimate, campaign, .keep_all = TRUE) %>%  #remove duplicate. Because of the nesting, we get one row per Datetime entry. We only need one row per flux. Select() gets rid of Datetime and then distinct() is cleaning those extra rows.
+    distinct(ID, site, plot, type, comments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, estimate, campaign, .keep_all = TRUE) %>%  #remove duplicate. Because of the nesting, we get one row per Datetime entry. We only need one row per flux. Select() gets rid of Datetime and then distinct() is cleaning those extra rows.
     #calculate fluxes using the trendline and the air temperature
     mutate(flux = (estimate * atm_pressure * vol)/(R * temp_airavg * plot_area) #gives flux in micromol/s/m^2
            *3600 #secs to hours
            /1000 #micromol to mmol
     ) %>%  #flux is now in mmol/m^2/h, which is more common
-    select(datetime, ID, site, replicate, type, comments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, nobs, flux, campaign)
+    select(datetime, ID, site, plot, type, comments, date, PARavg, temp_airavg, temp_soilavg, r.squared, p.value, nobs, flux, campaign)
   
   return(fluxes_final)
   
