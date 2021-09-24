@@ -51,13 +51,14 @@ fluxes2021 <- read_csv("2021/data/BIO102_c-flux_2021.csv") %>%
 theme_set(theme_grey(base_size = 10)) 
 
 ggplot(fluxes2021, aes(type, flux)) +
-  geom_boxplot() +
+  # geom_boxplot() +
   # geom_col() +
-  # stat_summary(fun = "mean", geom = "bar") +
-  # stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
+  stat_summary(fun = "mean", geom = "bar") +
+  stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
   facet_wrap(vars(site)) +
   xlab("Flux type") +
-  ylab(bquote(CO[2]~"flux,"~mmol/m^2/h))
+  ylab(bquote(CO[2]~"flux,"~mmol/m^2/h)) +
+  ggsave("2021/site_comparison.png")
 
 
 # will need to show soil moisture, NDVI and PAR together with the fluxes...
@@ -73,12 +74,14 @@ ndvi <- read_csv("2021/data/BIO102_NDVI_2021.csv") %>%
 
 ggplot(ndvi, aes(site, NDVI)) +
   geom_boxplot() +
+  # geom_violin() +
   # geom_col() +
   # stat_summary(fun = "mean", geom = "bar") +
   # stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
   # facet_wrap(vars(site)) +
   xlab("Site") +
-  ylab("NDVI")
+  ylab("NDVI") +
+  ggsave("2021/NDVI_plot.png")
 
 soil_moisture <- read_csv("2021/data/BIO102_soil-moisture_2021.csv") %>% 
   mutate(
@@ -101,7 +104,8 @@ ggplot(soil_moisture, aes(site, soil_moisture)) +
   # stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
   # facet_wrap(vars(site)) +
   xlab("Site") +
-  ylab("Soil moisture, %vol")
+  ylab("Soil moisture, %vol") +
+  ggsave("2021/soil_moisture_plot.png")
 
 ggplot(fluxes2021, aes(site, PAR, fill = type)) +
   geom_boxplot() +
@@ -110,4 +114,5 @@ ggplot(fluxes2021, aes(site, PAR, fill = type)) +
   # stat_summary(fun.data = "mean_se", geom = "errorbar", width = 0.2) +
   # facet_wrap(vars(site)) +
   xlab("Site") +
-  ylab(bquote("PAR"~mol/m^2/s))
+  ylab(bquote("PAR"~mu*mol/m^2/s)) +
+  ggsave("2021/PAR_plot.png")
