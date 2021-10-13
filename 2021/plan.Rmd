@@ -15,15 +15,29 @@ Siri?
 
 ### Carbon fluxes (Joseph)
 
+- What the flux is this?
 - Ecosystem respiration (ER)
 - Gross ecosystem production (GEP)
 - Net ecosystem exchange (NEE)
-- Light response curve (we will not do any here but I think it is important to introduce what it is and why we use them)
+<!-- - Light response curve (we will not do any here but I think it is important to introduce what it is and why we use them) -->
 
 
 ## Field measurements
 Joseph will first demonstrate how the setup works and what is what.
 Then he will move from group to group to measure NEE and ER at each of the sites.
 The students will do the measurements themselves.
+We will measure PAR, soil moisture, soil temperature, and NDVI but will not do light response curves.
+
+## Workplace dynamics
+
+- 4 sites
+- ~40 students
+- 8 groups
+- 2 workplace per site
+
+- Groups will dig a hole to look at soil horizons (Siri)
+- Groups will turn to change site to have a look and describe each sites
+- Joseph will turn in the opposite direction
+- Goal is: get flux data from all the sites and all the students have seen/tried to measure fluxes
 
 

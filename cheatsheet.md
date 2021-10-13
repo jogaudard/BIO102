@@ -41,11 +41,11 @@ PAR defines the amount of light within the spectrum used for photosynthesis. The
 
 Where:
 
--   flux: the flux of CO<sub>2</sub> at the surface of the plot (mmol/m<sup>2</sup>/h)
--   slope: slope of linear regression fitting the CO<sub>2</sub> concentration versus time (ppm<sup>-1</sup>)
+-   flux: the flux of CO<sub>2</sub> at the surface of the plot (*μ*mol m<sup>-2</sup> s<sup>-1</sup>)
+-   slope: slope of linear regression fitting the CO<sub>2</sub> concentration versus time (*μ*mol mol<sup>-1</sup>)
 -   P: pressure, assumed 1 atm
 -   V: volume of the chamber and tubing (L)
--   R: gas constant (0.082057 L\*atm\*K<sup>-1</sup>\*mol<sup>-1</sup>)
+-   R: gas constant (0.082057 L atm K<sup>-1</sup> mol<sup>-1</sup>)
 -   T: chamber air temperature (K)
 -   A: area of chamber frame base (m<sup>2</sup>)
 
